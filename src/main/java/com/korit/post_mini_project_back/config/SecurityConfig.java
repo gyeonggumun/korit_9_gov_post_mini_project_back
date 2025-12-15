@@ -1,6 +1,8 @@
 package com.korit.post_mini_project_back.config;
 
 import com.korit.post_mini_project_back.filter.JwtAuthenticationFilter;
+import com.korit.post_mini_project_back.security.OAuth2SuccessHandler;
+import com.korit.post_mini_project_back.service.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,8 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     //CSR 방식이라서 하는 세팅
     @Bean  // Security에서 꼭 세팅 필요
@@ -43,16 +47,21 @@ public class SecurityConfig {
         //csrf 비활성화 - 워터마크 -> 대체: JWT 토큰 사용 (로그인시, CSR 만 가능)
         http.csrf(csrf -> csrf.disable());
 
+        http.oauth2Login(oauth2 ->
+                oauth2.userInfoEndpoint(userinfo -> userinfo.userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+        );
+
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 모든 요청(URL)에 대해 인증 없이 누구나 접근할 수 있도록 허용하는 설정
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/api/auth/**").permitAll();                   // 인가 - 일시적으로 모든 요청 허용
+            auth.requestMatchers("/api/auth/**").permitAll();
             auth.requestMatchers("/v3/api-docs/**").permitAll();
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
             auth.requestMatchers("/doc").permitAll();
-            auth.anyRequest().authenticated();                               //
+            auth.anyRequest().authenticated();
 
         });
         // 회원가입은 인증이 필요없어야함 - 필터 안 거쳐야함

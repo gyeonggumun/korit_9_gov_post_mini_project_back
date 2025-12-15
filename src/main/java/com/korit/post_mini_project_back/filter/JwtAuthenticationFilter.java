@@ -22,7 +22,7 @@ import java.util.Collection;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserMapper userMapper;
+//    private final UserMapper userMapper;
 
     //OncePerRequestFilter - 인증은 한번만 일어나면 됨 - 한 요청당 jwt 한번만 확인하겠다
 
@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         int userId = jwtTokenProvider.getUserId(accessToken);
-        User foundUser = userMapper.findUserByUserId(userId);
+        User foundUser = null;
         if (foundUser == null) {
             filterChain.doFilter(request, response);
             return;
