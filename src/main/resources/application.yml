@@ -1,0 +1,12 @@
+jwt:
+  secret: b8109405aca469842f736c2d69c25d5e6040416c377809338651d4de2a516a14b751a78ceb5bb5c42e6ccf323afb48987af4a9411091352c97404db9f9d3b333
+
+springdoc:
+  swagger-ui:
+    path: doc
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.korit.springboot.entity
