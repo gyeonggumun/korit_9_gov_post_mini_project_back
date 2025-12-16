@@ -7,7 +7,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
         insert into user_tb
-        values (default, #{oauth2Id}, #{nickname}, #{name}, #{email}, #{provider}, #{role}, now())
+        values (default, #{oauth2Id}, #{nickname}, #{name}, #{email}, #{provider}, #{role}, #{imgUrl}, #{imgFilePath}, now())
     </insert>
     <select id="findByUserId" resultType="User">
         select
@@ -18,6 +18,8 @@
             email,
             provider,
             role,
+            img_url,
+            img_file_path,
             created_at
         from
             user_tb
@@ -33,6 +35,8 @@
             email,
             provider,
             role,
+            img_url,
+            img_file_path,
             created_at
         from
             user_tb
@@ -48,10 +52,34 @@
             email,
             provider,
             role,
+            img_url,
+            img_file_path,
             created_at
         from
             user_tb
         where
             nickname = #{nickname}
+    </select>
+    <select id="createNickname" resultType="java.lang.String">
+        select
+            concat(
+                (select
+                    word as adjective_word
+                from
+                    nickname_words_tb
+                where
+                    word_type = 'adjective'
+                order by
+                    rand()
+                limit 0, 1),
+                (select
+                    word as noun_word
+                from
+                    nickname_words_tb
+                where
+                    word_type = 'noun'
+                order by
+                    rand()
+                limit 0, 1)) as nickname;
     </select>
 </mapper>

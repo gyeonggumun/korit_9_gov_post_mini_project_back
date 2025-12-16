@@ -19,5 +19,7 @@ public class User {
     private String email;
     private String provider;
     private String role;
+    private String imgUrl;
+    private String imgFilePath;
     private LocalDateTime createdAt;
 }
