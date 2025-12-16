@@ -2,6 +2,7 @@ package com.korit.post_mini_project_back.service;
 
 import com.korit.post_mini_project_back.entity.User;
 import com.korit.post_mini_project_back.mapper.UserMapper;
+import com.korit.post_mini_project_back.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -20,17 +21,9 @@ public class UserService {
     }
 
     public User createUser(Authentication authentication) {
-        DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
-        Map<String, Object> attrivutes = oAuth2User.getAttributes();
-        User user = User.builder()
-                .oauth2Id((String) attrivutes.get("id"))
-                .nickname(createNickname())
-                .name((String) attrivutes.get("name"))
-                .email((String) attrivutes.get("email"))
-                .provider((String) attrivutes.get("provider"))
-                .imgUrl((String) attrivutes.get("profile_image"))
-                .build();
-
+        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
+        User user = principalUser.getUser();
+        user.setNickname(createNickname());
 //        userMapper.findByOauth2Id();
         userMapper.insert(user);
         return user;
