@@ -25,6 +25,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Collection<? extends GrantedAuthority> authorities = oAuth2User.getAuthorities();
         String nameAttributeKey = null;
 
+        attributes.put("provider", clientName);
+
         if ("NAVER".equalsIgnoreCase(clientName))  {
             Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttributes().get("response");
             attributes.putAll(response);

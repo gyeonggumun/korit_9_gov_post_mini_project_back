@@ -6,14 +6,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class PrincipalUser implements UserDetails {
+public class PrincipalUser implements UserDetails, OAuth2User {
     @Getter
     private final User userEntity;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
