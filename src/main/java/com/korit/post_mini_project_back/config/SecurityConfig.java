@@ -1,6 +1,7 @@
 package com.korit.post_mini_project_back.config;
 
 import com.korit.post_mini_project_back.filter.JwtAuthenticationFilter;
+import com.korit.post_mini_project_back.security.JwtAuthenticationEntryPoint;
 import com.korit.post_mini_project_back.security.OAuth2SuccessHandler;
 import com.korit.post_mini_project_back.service.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final OAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
@@ -62,11 +64,12 @@ public class SecurityConfig {
             auth.requestMatchers("/swagger-ui.html").permitAll();
             auth.requestMatchers("/doc").permitAll();
             auth.anyRequest().authenticated();
-
         });
         // 회원가입은 인증이 필요없어야함 - 필터 안 거쳐야함
         // 로그인 - 인증 필요없음
         // 로그인 완료 시 토큰 지급다음
+
+        http.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
 
         return http.build(); // 예외처리 필요
     }
