@@ -27,7 +27,6 @@ public class PostController {
 
     @GetMapping("/feeds")
     public ResponseEntity<?> getFeedList(GetFeedListReqDto dto) {
-
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(postService.getFeeds(dto));
     }
 }
