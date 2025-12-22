@@ -9,4 +9,5 @@
         insert into post_tb
         values (default, #{content}, #{visibility}, #{userId}, now())
     </insert>
+    <select id="getFeeds" resultType="com.korit.post_mini_project_back.entity.Post"></select>
 </mapper>
