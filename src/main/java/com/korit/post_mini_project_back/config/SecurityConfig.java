@@ -63,6 +63,7 @@ public class SecurityConfig {
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
             auth.requestMatchers("/doc").permitAll();
+            auth.requestMatchers("/image/**").permitAll();
             auth.anyRequest().authenticated();
         });
         // 회원가입은 인증이 필요없어야함 - 필터 안 거쳐야함
